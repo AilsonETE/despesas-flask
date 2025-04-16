@@ -1,0 +1,59 @@
+{% extends 'adminlte/base.html' %}
+{% block title %}Editar Despesa{% endblock %}
+{% block header %}Editar Despesa #{{ despesa.id }}{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" class="row g-3">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="col-md-6">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" class="form-control" name="titulo" value="{{ despesa.titulo }}" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="valor" class="form-label">Valor</label>
+        <input type="number" step="0.01" class="form-control" name="valor" value="{{ despesa.valor }}" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="data_vencimento" class="form-label">Data de Vencimento</label>
+        <input type="date" class="form-control" name="data_vencimento"
+            value="{{ despesa.data_vencimento.strftime('%Y-%m-%d') }}" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="data_execucao" class="form-label">Data de Execução</label>
+        <input type="date" class="form-control" name="data_execucao"
+            value="{{ despesa.data_execucao.strftime('%Y-%m-%d') if despesa.data_execucao else '' }}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="status" class="form-label">Status</label>
+        <select name="status" class="form-select">
+            <option value="Executada" {% if despesa.status=='Executada' %}selected{% endif %}>Executada</option>
+            <option value="Pendente" {% if despesa.status=='Pendente' %}selected{% endif %}>Pendente</option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="destino" class="form-label">Destino</label>
+        <input type="text" class="form-control" name="destino" value="{{ despesa.destino }}">
+    </div>
+
+    <div class="col-12">
+        <label for="descricao" class="form-label">Descrição</label>
+        <textarea name="descricao" class="form-control">{{ despesa.descricao }}</textarea>
+    </div>
+
+    <div class="col-12">
+        <label for="comprovante" class="form-label">Comprovante (se quiser atualizar)</label>
+        <input type="file" class="form-control" name="comprovante">
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+        <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
